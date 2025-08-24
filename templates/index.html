@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSON Schema Validator</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      max-width: 650px;
+      width: 100%;
+    }
+
+    .card {
+      border-radius: 20px;
+      padding: 30px;
+      background: #ffffff;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      animation: fadeIn 0.8s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      font-weight: 700;
+      color: #1e3c72;
+    }
+
+    label {
+      font-weight: 500;
+      color: #333;
+    }
+
+    .form-control {
+      border-radius: 12px;
+      padding: 12px;
+      border: 1px solid #ddd;
+      transition: 0.3s;
+    }
+
+    .form-control:focus {
+      border-color: #1e3c72;
+      box-shadow: 0 0 8px rgba(30, 60, 114, 0.4);
+    }
+
+    .btn-custom {
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: white;
+      border-radius: 30px;
+      padding: 12px 25px;
+      font-weight: 600;
+      border: none;
+      transition: 0.3s;
+    }
+
+    .btn-custom:hover {
+      background: linear-gradient(135deg, #2a5298, #1e3c72);
+      color:white;
+      transform: scale(1.05);
+    }
+
+    .result-box {
+      margin-top: 25px;
+      padding: 18px;
+      border-radius: 12px;
+      font-weight: 500;
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    .result-success {
+      background: #d4edda;
+      color: #155724;
+      border-left: 5px solid #28a745;
+    }
+
+    .result-error {
+      background: #f8d7da;
+      color: #721c24;
+      border-left: 5px solid #dc3545;
+    }
+
+    ul {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h2 class="text-center mb-4">📂 JSON Schema Validator</h2>
+
+      <form method="POST" enctype="multipart/form-data">
+        <div class="mb-3">
+          <label class="form-label">Upload JSON Schema</label>
+          <input class="form-control" type="file" name="schema_file" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Upload JSON Data</label>
+          <input class="form-control" type="file" name="data_file" required>
+        </div>
+
+        <div class="text-center">
+          <button type="submit" class="btn btn-custom">Validate</button>
+        </div>
+      </form>
+
+      {% if result %}
+      <div class="result-box {% if '✅' in result %}result-success{% else %}result-error{% endif %}">
+        <h5>{{ result }}</h5>
+        {% if errors %}
+          <ul>
+            {% for error in errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+        {% if same_file_error %}
+          <ul>
+            <li>{{ same_file_error }}</li>
+          </ul>
+        {% endif %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</body>
+</html>
